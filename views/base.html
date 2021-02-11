@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Telefonico</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/uikit.css"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/uikit.js"></script>
+    <script src="/js/uikit-icons.js"></script>
+    <!-- mapas -->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <!-- charts -->
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+    <style>
+        .map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NOTIFICACION -->
+{{#if mensaje}}
+<script>
+    UIkit.notification({message: '{{ mensaje }}', status: 'success'})
+</script>
+{{/if}}
+<script>
+    var mensaje = getUrlParameter('mensaje');
+    var tipoMensaje = getUrlParameter('tipoMensaje');
+
+    if ( mensaje != ""){
+        if (tipoMensaje == "" ){
+            tipoMensaje = 'primary';
+        }
+        UIkit.notification({message: mensaje, status: tipoMensaje})
+    }
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' :
+            decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+</script>
+
+<!--HEADER-->
+<header class="uk-box-shadow-small">
+    <div class="uk-container uk-container-expand">
+        <nav class="uk-navbar" data-uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/"><img width="400" src="images/nombre.png" alt=""></a>
+            </div>
+
+            <div class="uk-navbar-right">
+                <div class="uk-navbar-item">
+                    <button class="uk-button uk-button-default" type="button">
+                        <span data-uk-icon="sign-in" class="uk-margin-small-right"> <a href="/">Área T</a></span>
+                    </button>
+                    <div uk-dropdown>
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li><b>Principal</b></li>
+                            <li><a href="/mi_contratar">Contratar</a></li>
+                            <li><a href="/mi_trabaja">Trabaja con nosotros</a></li>
+                            <li><a href="/a_cliente">Entrar en área cliente</a></li>
+                            <li><a href="/mi_info">Infórmate</a></li>
+                            <li><a href="/p_frecuentes">Ayuda</a></li>
+                            <li><a href="/mi_tiendas">Tiendas</a></li>
+                            <li><a href="/mi_extranjero">Roaming</a></li>
+                            <li class="uk-margin-top"><b>Otros</b></li>
+                            <li><a href="/p_frecuentes">¿Puedo contratar desde la web?</a></li>
+                            <li><a href="/p_frecuentes">¿Cuánto tarda la instalación?</a></li>
+                            <li><a href="/p_frecuentes">¿La instalación es gratis?</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="uk-navbar-nav">
+                    <li>
+                        <a href="/empresas">Empresas</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/e_exito">Casos de éxito</a></li>
+                                <li><a href="/e_grandes">Grandes empresas</a></li>
+                                <li><a href="/e_bares">Televisión para bares</a></li>
+                                <li><a href="/e_familias">Familias</a></li>
+                                <li><a href="/e_pequenas">Prequeñas empresas</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/herramientas">Herramientas</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/h_velocidad">Test de velocidad Internet</a></li>
+                                <li><a href="/h_configurar_tarifa">Configurar Tarifa</a></li>
+                                <li><a href="/mi_tiendas">Buscador de tiendas</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/packs">Fibra+TV+Móvil</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/p_pack_basico">Pack Básico</a></li>
+                                <li><a href="/p_pack_medio">Pack Medio</a></li>
+                                <li><a href="/p_pack_avanzado">Pack Avanzado</a></li>
+                                <li><a href="/h_configurar_tarifa">Configurar Pack</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/fibra">Fibra y Móvil</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><a href="/f_100">Fibra 100</a></li>
+                                <li><a href="/f_300">Fibra 300</a></li>
+                                <li><a href="/f_600">Fibra 600</a></li>
+                                <li><a href="/m_adicional">Móvil Líneas adicionales</a></li>
+                                <li><a href="/m_medio">Móvil Medio</a></li>
+                                <li><a href="/m_basico">Móvil Básico</a></li>
+                                <li><a href="/m_avanzado">Móvil Avanzado</a></li>
+                                <li><a href="/m_gb">Móvil GB adicionales</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/s_todos">Smartphones</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><b>Smartphones</b></li>
+                                <li><a href="/s_samsung">Samsung</a></li>
+                                <li><a href="/s_apple">Apple</a></li>
+                                <li><a href="/s_xiaomi">Xiaomi</a></li>
+                                <li><a href="/s_todos">Todos los Smarphones</a></li>
+                                <li class="uk-margin-top"><b>Objetos inteligentes</b></li>
+                                <li><a href="/o_relojes">Relojes</a></li>
+                                <li><a href="/o_enchufes_luces">Enchufes y luces</a></li>
+                                <li><a href="/o_alarmas">Alarmas</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/tv_1">TV</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li><b>Televisión</b></li>
+                                <li><a href="/tv_netflix">Netflix</a></li>
+                                <li><a href="/tv_suscripciones">Otras subscripciones</a></li>
+                                <li><a href="/tv_infantil">Infantiles</a></li>
+                                <li><a href="/tv_cine">Cine pack</a></li>
+                                <li><a href="/tv_series">Series pack</a></li>
+                                <li><a href="/tv_1">TV +</a></li>
+                                <li><a href="/tv_decodificar">Decodificadores</a></li>
+                                <li><a href="/tv_4k">Ver en 4k</a></li>
+                                <li><a href="/tv_aplicaciones">Aplicaciones y juegos</a></li>
+                                <li><a href="/tv_mando">¿Como funciona el mando?</a></li>
+                                <li class="uk-margin-top"><b>Preguntas frecuentes</b></li>
+                                <li><a href="/p_frecuentes">Función replay</a></li>
+                                <li><a href="/p_frecuentes">Segunda televisión</a></li>
+                                <li><a href="/p_frecuentes">Instalación</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+{{{content}}}
+
+<!--FOOTER-->
+<footer class="uk-section-secondary">
+    <div class="uk-container uk-section">
+        <div class="uk-grid uk-child-width-1-3@m">
+            <div>
+                <h4 class="uk-margin-top">Telefonico</h4>
+                <ul class="uk-list uk-list-bullet">
+                    <li><a href="/mi_trabaja">Empleos</a></li>
+                    <li><a href="/mi_info">Llamanos</a></li>
+                    <li><a href="/e_exito">Casos de éxito</a></li>
+                    <li><a href="/mi_trabaja">Trabaja con nosotros</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="uk-margin-top">Productos</h4>
+                <ul class="uk-list uk-list-bullet">
+                    <li><a href="/e_pequenas">Para empresas</a></li>
+                    <li><a href="/packs">Móvil+Fibra+TV</a></li>
+                    <li><a href="/internet">Internet para casa</a></li>
+                    <li><a href="/s_todos">Dispositivos</a></li>
+                    <li><a href="/tv_suscripciones">Suscripciones de vídeo</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Facebook, Instagram y Twitter</h4>
+                <a class="uk-icon-button  uk-margin-small-right"
+                   data-uk-icon="facebook"></a>
+                <a class="uk-icon-button  uk-margin-small-right"
+                   data-uk-icon="twitter"></a>
+                <a class="uk-icon-button"
+                   data-uk-icon="instagram"></a>
+                <h4 class="uk-margin-top">Preguntas frecuentes</h4>
+                <ul class="uk-list uk-list-bullet">
+                    <li><a href="/h_configurar_tarifa">Personalizar producto</a></li>
+                    <li><a href="/tv_mando">Como funciona el mando</a></li>
+                    <li><a href="/mi_info">Escribenos</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="uk-section uk-section-xsmall"
+         style="background-color: rgba(0,0,0,0.15)">
+        <div class="uk-container">
+            <div class="uk-grid uk-child-width-1-2@s uk-text-center uk-text-left@s"
+                 data-uk-grid>
+                <div class="uk-text-small uk-text-muted">
+                    Copyright 2020 - Todos los derechos.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

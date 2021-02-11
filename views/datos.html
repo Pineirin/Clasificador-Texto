@@ -1,0 +1,89 @@
+
+
+
+<section class="uk-section uk-section-default">
+    <div class="uk-container" >
+
+        <div uk-grid>
+
+            <div class="uk-card uk-card-default uk-grid-collapse uk-margin uk-width-1-1">
+                <table id="tabla" class="display">
+                    <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Descarga</th>
+                        <th>Subida</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>01/12/2020</td>
+                        <td>3GB</td>
+                        <td>2GB</td>
+                    </tr>
+                    <tr>
+                        <td>02/12/2020</td>
+                        <td>32GB</td>
+                        <td>4GB</td>
+                    </tr>
+                    <tr>
+                        <td>03/12/2020</td>
+                        <td>4GB</td>
+                        <td>1GB</td>
+                    </tr>
+                    <tr>
+                        <td>04/12/2020</td>
+                        <td>91GB</td>
+                        <td>3GB</td>
+                    </tr>
+                    <tr>
+                        <td>05/12/2020</td>
+                        <td>23GB</td>
+                        <td>10GB</td>
+                    </tr>
+                    <tr>
+                        <td>06/12/2020</td>
+                        <td>65GB</td>
+                        <td>34GB</td>
+                    </tr>
+                    <tr>
+                        <td>07/12/2020</td>
+                        <td>12GB</td>
+                        <td>5GB</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script>
+
+                $('#tabla thead tr:eq(0) th').each( function (i) {
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="'+title+'" />' );
+
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
+                } );
+
+                var table = $('#tabla').DataTable( {
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    pageLength: 25
+                } );
+
+                $( "#tabla_filter" ).remove();
+                $( "#tabla_length" ).remove();
+                $( "#tabla_info" ).remove();
+
+                $( "#tabla_next" ).text("Siguiente");
+                $( "#tabla_previous" ).text("Anterior");
+            </script>
+
+        </div>
+    </div>
+</section>
