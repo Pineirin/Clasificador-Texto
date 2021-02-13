@@ -16,7 +16,7 @@ app.get('/', function (_, res) {
 });
 
 function preprocessing(paragraph) {
-    paragraph = paragraph.toLowerCase();
+    // paragraph = paragraph.toLowerCase();
     paragraph = paragraph.replace(/\n/g, ' ');
     paragraph = paragraph.replace(/\t/g, ' ');
     paragraph = paragraph.replace(/,/gi, '.');      // todas las , por .
@@ -39,7 +39,7 @@ function posTransformation(paragraph) {
     var deleteFromText = 
         ["CC",  "CD",   "DT",   "EX",   "FW", 
          "IN",  "JJ",   "JJR",  "JJS",  "LS", 
-         "MD",  "NNS",  "NNP",  "NNPS", "PDT",
+         "MD",  "NNS",  "NN",   "PDT",
          "POS", "PRP",  "PRP$", "RB",   "RBR",
          "RBS", "RP",   "SYM",  "TO",   "UH",
          "VB",  "VBD",  "VBG",  "VBN",  "VBP",
