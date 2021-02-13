@@ -27,6 +27,7 @@ body {
     height: 300px;
     background-color: #7E7E7E;
     color: white;
+    resize: none;
 }
 
 .textarea.form-control {
