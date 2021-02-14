@@ -111,9 +111,46 @@ function insertValue(measuredNouns, word, measure) {
     return measuredNouns;
 }
 
+function divide(paragraph, nouns, measuredNouns){
+    //Texto divido en secciones (objetivo)
+    dividedText = []
+    //Texto dividido palabras
+    words = paragraph.split(' ')
+    //Índice de la frase en la que se encuentra el iterador.
+    phraseNumber = 0;
+    //Nombre de las rutas
+    titles = []
+    //Este if estaría a true si se encuentra el principio del nombre de una ruta.
+    findingTitle = false;
+    //Obtener los nombres de las rutas, junto al índice de su frase.
+    words.forEach(word =>{
+        //Ha encontrado el principio del título
+        if (findingTitle && nouns.indexOf(word) >= 0){
+            titles[titles.length-1][0] += " " + word
+        } 
+        //Encuentra el final del título
+        else if (findingTitle){
+            findingTitle = false;
+        }
+        //Encuentra el principio del título
+        else if (measuredNouns.indexOf(word) >= 0){
+            titles.push([word, phraseNumber])
+            finding = true;
+        }
+        //Encuentra una frase nueva.
+        if (word.includes(".")){
+            phraseNumber++;
+        }
+    })
+    //Texto dividido en frases.
+    phrases = paragraph.split(' ')
+
+}
+
 function sortOut(paragraph){
     var nouns = posTransformation(paragraph)
     measuredNouns = measureNouns(paragraph, nouns);
+    divided = divide(paragraph, nouns, measuredNouns);
     return measuredNouns;
 }
 
