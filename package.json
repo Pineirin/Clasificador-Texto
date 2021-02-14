@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
     "natural": "^3.0.1",
-    "pos": "^0.4.2"
+    "pos": "^0.4.2",
+    "synonyms": "^1.0.1"
   }
 }

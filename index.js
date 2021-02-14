@@ -2,6 +2,7 @@ var express = require('express');
 var exphbs  = require('express-handlebars');
 var pos = require('pos');
 var natural = require('natural');
+var synonyms = require("synonyms");
 
 var app = express();
 
@@ -162,12 +163,6 @@ function divide(nouns, measuredNouns){
             }
         }
     });
-    result = '';
-    m = 0
-    /*titles.forEach((title) => {
-        result += title + "\n";
-        // result += body[m];
-    });*/
     return titles;
 }
 
@@ -181,6 +176,37 @@ function obtainTitles(titlesList) {
         }
     });
     return result.split(',');
+}
+
+function hasSynonyms(text) {
+    var words = text.split(' ');
+    var found = false;
+    words.forEach(word => {
+        if (word != '') {
+            var lists = synonyms(word);
+            if (lists != undefined && lists["n"] != undefined) {
+                lists["n"].forEach(elem => {
+                    if (elem.toLowerCase() === "start" ||
+                        elem.toLowerCase() === "finish" ||
+                        elem.toLowerCase() === "elevation" ||
+                        elem.toLowerCase() === "distance") {
+                        found = true;
+                    }
+                });
+            }
+            if (lists != undefined && lists["v"] != undefined) {
+                lists["v"].forEach(elem => {
+                    if (elem.toLowerCase() === "start" ||
+                    elem.toLowerCase() === "finish" ||
+                    elem.toLowerCase() === "elevation" ||
+                    elem.toLowerCase() === "distance") {
+                        found = true;
+                    }
+                });
+            }
+        }
+    });
+    return found;
 }
 
 function obtainBodies(titles, paragraph) {
@@ -203,7 +229,16 @@ function obtainBodies(titles, paragraph) {
             }
         });
         if(!wasTitle) {
-            result += sentence + ".";
+            if (sentence.includes(':')) {
+                var splittedText = sentence.split(':');
+                if (hasSynonyms(splittedText[0])) {
+                    result += "\t" + "-  " + sentence + ".\n";
+                } else {
+                    result += sentence + ".";
+                }
+            } else {
+                result += sentence + ".";
+            }
         }
     });
     return result;
