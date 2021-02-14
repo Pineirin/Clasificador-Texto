@@ -145,6 +145,16 @@ function divide(paragraph, nouns, measuredNouns){
     //Texto dividido en frases.
     phrases = paragraph.split(' ')
 
+    //Ligar cada frase a un título
+    for (i=0; i<phrases.length; i++) {
+        for (j=0; j<titles.length; j++){
+            if (i==j){
+                dividedText.push(titles[j], phrases[i])
+            }
+        }
+    } 
+    return dividedText;
+
 }
 
 function sortOut(paragraph){
