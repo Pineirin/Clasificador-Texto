@@ -217,7 +217,7 @@ function obtainBodies(titles, paragraph) {
         var tempSentence = sentence.replace(/,/gi, '');
         var wasTitle = false;
         titles.some(title => {
-            if (tempSentence.includes(title) && title.length/tempSentence.length*100 >= 60 ) {
+            if (tempSentence.includes(title) && title.length/tempSentence.length*100 >= 40 ) {
                 wasTitle = true;
                 if (isFirst) {
                     result += sentence + "\n\n";
